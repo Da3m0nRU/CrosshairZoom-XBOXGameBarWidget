@@ -1,0 +1,28 @@
+# Backups от рандомизации
+Backups/
+
+# Массовые сборки
+BatchBuilds/
+
+# Стандартные игнорируемые файлы UWP
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+
+# Пакеты
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+
+# Сертификаты
+*.pfx
+*.cer
+
+# Временные файлы
+*.tmp
+*.log
+/AppPackages

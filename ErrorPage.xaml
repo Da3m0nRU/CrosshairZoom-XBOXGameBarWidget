@@ -1,0 +1,19 @@
+<Page
+  x:Class="nsaygqv0ixdkwb.ErrorPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  Background="#1E1E1E">
+  <ScrollViewer Padding="16" VerticalScrollBarVisibility="Auto">
+    <StackPanel Spacing="8">
+      <TextBlock Text="Error loading page"
+                 FontSize="16" FontWeight="SemiBold"
+                 Foreground="#FFD96464"/>
+      <TextBlock x:Name="MessageText"
+                 FontSize="12"
+                 Foreground="White"
+                 Opacity="0.9"
+                 TextWrapping="Wrap"
+                 IsTextSelectionEnabled="True"/>
+    </StackPanel>
+  </ScrollViewer>
+</Page>

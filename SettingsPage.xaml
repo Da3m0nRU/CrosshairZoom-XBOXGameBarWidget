@@ -1,0 +1,321 @@
+<Page
+  x:Class="nsaygqv0ixdkwb.SettingsPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  Background="#1E1E1E">
+  <Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,8,0,16">
+      <StackPanel>
+
+        <!-- Pin banner -->
+        <Border Margin="12,4,12,4" Padding="12,8" Background="#2A2A2A">
+          <TextBlock HorizontalAlignment="Center" FontWeight="Bold"
+                     Foreground="#FFD96464"
+                     Text="THE WIDGET SHOULD BE PINNED"/>
+        </Border>
+
+        <!-- Master Zoom -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Zoom" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Master switch for the magnifier."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <ToggleSwitch x:Name="EnabledSwitch" Grid.Column="1"
+                        Toggled="EnabledSwitch_Toggled"/>
+        </Grid>
+
+        <!-- Section header: Zoom -->
+        <Border Margin="0,6,0,0" Padding="12,10" Background="#2A2A2A">
+          <TextBlock Text="Zoom" FontSize="15" FontWeight="SemiBold" Foreground="White"/>
+        </Border>
+
+        <!-- Magnification -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Magnification" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Zoom magnification level."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <ComboBox x:Name="MagCombo" Grid.Column="1" MinWidth="80"
+                    SelectionChanged="MagCombo_SelectionChanged">
+            <ComboBoxItem Content="1"/>
+            <ComboBoxItem Content="2"/>
+            <ComboBoxItem Content="3"/>
+            <ComboBoxItem Content="4"/>
+            <ComboBoxItem Content="5"/>
+            <ComboBoxItem Content="6"/>
+            <ComboBoxItem Content="8"/>
+          </ComboBox>
+        </Grid>
+
+        <!-- Hotkey -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Hotkey" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Keyboard key that gates the zoom render."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Button x:Name="HotkeyBindButton" Grid.Column="1" MinWidth="110"
+                  Click="HotkeyBindButton_Click"/>
+          <ToggleSwitch x:Name="HotkeySwitch" Grid.Column="2" Margin="8,0,0,0"
+                        Toggled="HotkeySwitch_Toggled"/>
+        </Grid>
+
+        <!-- Hotkey mode -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Hotkey mode" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Hold: active while pressed. Toggle: press to flip."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <ComboBox x:Name="HotkeyModeCombo" Grid.Column="1" MinWidth="100"
+                    SelectionChanged="HotkeyModeCombo_SelectionChanged">
+            <ComboBoxItem Content="Hold"/>
+            <ComboBoxItem Content="Toggle"/>
+          </ComboBox>
+        </Grid>
+
+        <!-- Lock zoom area -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Lock Zoom Area" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Lock here = current cursor point. Lock center = screen centre."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Button x:Name="LockCenterButton" Grid.Column="1" MinWidth="100"
+                  Content="Lock center" Click="LockCenterButton_Click"/>
+          <Button x:Name="LockHereButton" Grid.Column="2" MinWidth="100" Margin="6,0,0,0"
+                  Content="Lock here" Click="LockHereButton_Click"/>
+          <ToggleSwitch x:Name="LockAreaSwitch" Grid.Column="3" Margin="8,0,0,0"
+                        Toggled="LockAreaSwitch_Toggled"/>
+        </Grid>
+
+        <!-- Circular zoom -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Circular Zoom" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Use a circular clip instead of a rectangular one."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <ToggleSwitch x:Name="CircularSwitch" Grid.Column="1"
+                        Toggled="CircularSwitch_Toggled"/>
+        </Grid>
+
+        <!-- Adaptive performance -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Adaptive Performance" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Automatically tunes Max FPS and Frame Skip."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <ToggleSwitch x:Name="AdaptiveSwitch" Grid.Column="1"
+                        Toggled="AdaptiveSwitch_Toggled"/>
+        </Grid>
+
+        <!-- Frame Skip -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Frame Skip" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Render every N+1 frames."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Slider x:Name="FrameSkipSlider" Grid.Column="1"
+                  ValueChanged="FrameSkipSlider_ValueChanged"/>
+          <TextBlock x:Name="FrameSkipValueLabel" Grid.Column="2" VerticalAlignment="Center"
+                     MinWidth="30" Margin="8,0,0,0" TextAlignment="Right" Foreground="White"/>
+        </Grid>
+
+        <!-- Section header: Crosshair -->
+        <Border Margin="0,6,0,0" Padding="12,10" Background="#2A2A2A">
+          <TextBlock Text="Crosshair" FontSize="15" FontWeight="SemiBold" Foreground="White"/>
+        </Border>
+
+        <!-- Crosshair enable -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Crosshair" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Draw a crosshair overlay in the centre of the zoom."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <ToggleSwitch x:Name="CrosshairSwitch" Grid.Column="1"
+                        Toggled="CrosshairSwitch_Toggled"/>
+        </Grid>
+
+        <!-- Crosshair style -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Style" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Crosshair shape preset."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <ComboBox x:Name="CrosshairStyleCombo" Grid.Column="1" MinWidth="120"
+                    SelectionChanged="CrosshairStyleCombo_SelectionChanged">
+            <ComboBoxItem Content="Dot"/>
+            <ComboBoxItem Content="Cross"/>
+            <ComboBoxItem Content="Plus (gap)"/>
+            <ComboBoxItem Content="Circle"/>
+            <ComboBoxItem Content="Circle + Dot"/>
+            <ComboBoxItem Content="T-Shape"/>
+            <ComboBoxItem Content="Chevron"/>
+          </ComboBox>
+        </Grid>
+
+        <!-- Crosshair color -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Color" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Pick a crosshair color."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+            <Button x:Name="ColorGreen" Width="28" Height="28" Margin="2" Background="#FF00FF00" Click="ColorButton_Click" Tag="4278255360"/>
+            <Button x:Name="ColorRed" Width="28" Height="28" Margin="2" Background="#FFFF0000" Click="ColorButton_Click" Tag="4294901760"/>
+            <Button x:Name="ColorCyan" Width="28" Height="28" Margin="2" Background="#FF00FFFF" Click="ColorButton_Click" Tag="4278255615"/>
+            <Button x:Name="ColorYellow" Width="28" Height="28" Margin="2" Background="#FFFFFF00" Click="ColorButton_Click" Tag="4294967040"/>
+            <Button x:Name="ColorWhite" Width="28" Height="28" Margin="2" Background="#FFFFFFFF" Click="ColorButton_Click" Tag="4294967295"/>
+            <Button x:Name="ColorMagenta" Width="28" Height="28" Margin="2" Background="#FFFF00FF" Click="ColorButton_Click" Tag="4294902015"/>
+          </StackPanel>
+        </Grid>
+
+        <!-- Crosshair size -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Size" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Crosshair radius in pixels."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Slider x:Name="CrosshairSizeSlider" Grid.Column="1"
+                  ValueChanged="CrosshairSizeSlider_ValueChanged"/>
+          <TextBlock x:Name="CrosshairSizeLabel" Grid.Column="2" VerticalAlignment="Center"
+                     MinWidth="30" Margin="8,0,0,0" Foreground="White"/>
+        </Grid>
+
+        <!-- Crosshair thickness -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Thickness" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Line thickness in pixels."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Slider x:Name="CrosshairThicknessSlider" Grid.Column="1"
+                  ValueChanged="CrosshairThicknessSlider_ValueChanged"/>
+          <TextBlock x:Name="CrosshairThicknessLabel" Grid.Column="2" VerticalAlignment="Center"
+                     MinWidth="30" Margin="8,0,0,0" Foreground="White"/>
+        </Grid>
+
+        <!-- Crosshair gap -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Gap" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Centre gap for Plus / CircleDot styles."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Slider x:Name="CrosshairGapSlider" Grid.Column="1"
+                  ValueChanged="CrosshairGapSlider_ValueChanged"/>
+          <TextBlock x:Name="CrosshairGapLabel" Grid.Column="2" VerticalAlignment="Center"
+                     MinWidth="30" Margin="8,0,0,0" Foreground="White"/>
+        </Grid>
+
+        <!-- Section header: Widget Window -->
+        <Border Margin="0,6,0,0" Padding="12,10" Background="#2A2A2A">
+          <TextBlock Text="Widget Window" FontSize="15" FontWeight="SemiBold" Foreground="White"/>
+        </Border>
+
+        <!-- Widget Size -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Widget Size" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Adjust the widget window size."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Slider x:Name="WidgetSizeSlider" Grid.Column="1"
+                  ValueChanged="WidgetSizeSlider_ValueChanged"/>
+        </Grid>
+
+        <!-- Widget Position -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Widget Position" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Center the widget window on screen."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Button x:Name="CentralizeButton" Grid.Column="1" MinWidth="140"
+                  Content="Centralize window" Click="CentralizeButton_Click"/>
+        </Grid>
+
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</Page>
