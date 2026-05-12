@@ -59,6 +59,16 @@ namespace nsaygqv0ixdkwb
             CrosshairGapSlider.Maximum = 50;
             CrosshairGapSlider.Minimum = 0;
             CrosshairGapSlider.StepFrequency = 1;
+
+            // Offsets: -halfScreen..+halfScreen. We don't know the exact monitor size
+            // from the settings widget, so pick a generous range that covers 4K.
+            OffsetXSlider.Maximum = 1920;
+            OffsetXSlider.Minimum = -1920;
+            OffsetXSlider.StepFrequency = 10;
+
+            OffsetYSlider.Maximum = 1080;
+            OffsetYSlider.Minimum = -1080;
+            OffsetYSlider.StepFrequency = 10;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -87,8 +97,11 @@ namespace nsaygqv0ixdkwb
                 AdaptiveSwitch.IsOn = s.AdaptivePerformance;
                 WidgetSizeSlider.Value = s.RequestedWidgetSize > 0 ? s.RequestedWidgetSize : 400;
 
+                OffsetXSlider.Value = ClampToSliderRange(s.OffsetX, OffsetXSlider);
+                OffsetYSlider.Value = ClampToSliderRange(s.OffsetY, OffsetYSlider);
+
                 CrosshairSwitch.IsOn = s.CrosshairEnabled;
-                CrosshairStyleCombo.SelectedIndex = Math.Max(0, s.CrosshairStyle - 1); // enum starts at 1
+                CrosshairStyleCombo.SelectedIndex = Math.Max(0, s.CrosshairStyle - 1);
                 CrosshairSizeSlider.Value = s.CrosshairSize;
                 CrosshairThicknessSlider.Value = s.CrosshairThickness;
                 CrosshairGapSlider.Value = s.CrosshairGap;
@@ -96,7 +109,10 @@ namespace nsaygqv0ixdkwb
                 UpdateFrameSkipLabel();
                 UpdateHotkeyLabel();
                 UpdateCrosshairLabels();
+                UpdateOffsetLabels();
                 ApplyAdaptiveGating();
+
+                ReloadProfileList();
             }
             finally
             {
@@ -189,24 +205,40 @@ namespace nsaygqv0ixdkwb
             ZoomSettings.Instance.LockZoomArea = LockAreaSwitch.IsOn;
         }
 
-        private void LockHereButton_Click(object sender, RoutedEventArgs e)
+        private void OffsetXSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            // Ask the main widget to capture the current cursor position and lock there.
-            // The settings widget lives in a separate process, so we can't read the
-            // cursor in the main widget's monitor coordinates reliably from here.
-            var s = ZoomSettings.Instance;
-            s.RequestedLockHereSeq = s.RequestedLockHereSeq + 1;
+            if (_initializing) return;
+            ZoomSettings.Instance.OffsetX = e.NewValue;
+            UpdateOffsetLabels();
         }
 
-        private void LockCenterButton_Click(object sender, RoutedEventArgs e)
+        private void OffsetYSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            // Clearing the locked coordinates makes the main widget's cursor-follow
-            // fallback snap to the monitor centre, which is what the user wants.
-            var s = ZoomSettings.Instance;
-            s.LockedCenterX = 0;
-            s.LockedCenterY = 0;
-            s.LockZoomArea = true;
-            LockAreaSwitch.IsOn = true;
+            if (_initializing) return;
+            ZoomSettings.Instance.OffsetY = e.NewValue;
+            UpdateOffsetLabels();
+        }
+
+        private void ResetOffsetsButton_Click(object sender, RoutedEventArgs e)
+        {
+            ZoomSettings.Instance.OffsetX = 0;
+            ZoomSettings.Instance.OffsetY = 0;
+            OffsetXSlider.Value = 0;
+            OffsetYSlider.Value = 0;
+            UpdateOffsetLabels();
+        }
+
+        private void UpdateOffsetLabels()
+        {
+            OffsetXLabel.Text = $"{(int)ZoomSettings.Instance.OffsetX}";
+            OffsetYLabel.Text = $"{(int)ZoomSettings.Instance.OffsetY}";
+        }
+
+        private static double ClampToSliderRange(double v, Slider s)
+        {
+            if (v < s.Minimum) return s.Minimum;
+            if (v > s.Maximum) return s.Maximum;
+            return v;
         }
 
         private void FrameSkipSlider_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
@@ -327,6 +359,73 @@ namespace nsaygqv0ixdkwb
             if (_initializing) return;
             ZoomSettings.Instance.CrosshairGap = (int)e.NewValue;
             UpdateCrosshairLabels();
+        }
+
+        // ---- Profiles ----
+
+        private bool _reloadingProfiles;
+
+        private void ReloadProfileList()
+        {
+            _reloadingProfiles = true;
+            try
+            {
+                ProfileCombo.Items.Clear();
+                foreach (var name in ZoomSettings.Instance.GetProfileNames())
+                {
+                    ProfileCombo.Items.Add(new ComboBoxItem { Content = name });
+                }
+            }
+            finally
+            {
+                _reloadingProfiles = false;
+            }
+        }
+
+        private void ProfileCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_initializing || _reloadingProfiles) return;
+
+            string name = (ProfileCombo.SelectedItem as ComboBoxItem)?.Content as string;
+            if (string.IsNullOrEmpty(name)) return;
+
+            // Loading a profile mutates the settings, so we reload the UI from them.
+            if (ZoomSettings.Instance.LoadProfile(name))
+            {
+                ProfileNameBox.Text = name;
+                LoadFromSettings();
+            }
+        }
+
+        private void ProfileSaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            string name = ProfileNameBox.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(name)) return;
+
+            ZoomSettings.Instance.SaveProfile(name);
+            ReloadProfileList();
+
+            // Select the newly saved profile in the combo.
+            for (int i = 0; i < ProfileCombo.Items.Count; i++)
+            {
+                if ((ProfileCombo.Items[i] as ComboBoxItem)?.Content as string == name)
+                {
+                    _reloadingProfiles = true;
+                    ProfileCombo.SelectedIndex = i;
+                    _reloadingProfiles = false;
+                    break;
+                }
+            }
+        }
+
+        private void ProfileDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            string name = (ProfileCombo.SelectedItem as ComboBoxItem)?.Content as string;
+            if (string.IsNullOrEmpty(name)) return;
+
+            ZoomSettings.Instance.DeleteProfile(name);
+            ReloadProfileList();
+            ProfileNameBox.Text = "";
         }
     }
 }

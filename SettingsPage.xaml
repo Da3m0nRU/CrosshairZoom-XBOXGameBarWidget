@@ -14,6 +14,40 @@
                      Text="THE WIDGET SHOULD BE PINNED"/>
         </Border>
 
+        <!-- Profiles section -->
+        <Border Margin="0,6,0,0" Padding="12,10" Background="#2A2A2A">
+          <TextBlock Text="Profiles" FontSize="15" FontWeight="SemiBold" Foreground="White"/>
+        </Border>
+
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Active profile" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Save the current configuration or switch between saved ones."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <ComboBox x:Name="ProfileCombo" Grid.Column="1" MinWidth="160"
+                    SelectionChanged="ProfileCombo_SelectionChanged"/>
+        </Grid>
+
+        <Grid Padding="12,4">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <TextBox x:Name="ProfileNameBox" Grid.Column="0" Margin="0,0,8,0"
+                   PlaceholderText="Profile name"/>
+          <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <Button x:Name="ProfileSaveButton" Content="Save"
+                    MinWidth="80" Click="ProfileSaveButton_Click"/>
+            <Button x:Name="ProfileDeleteButton" Content="Delete"
+                    MinWidth="80" Margin="6,0,0,0" Click="ProfileDeleteButton_Click"/>
+          </StackPanel>
+        </Grid>
+
         <!-- Master Zoom -->
         <Grid Padding="12,8">
           <Grid.ColumnDefinitions>
@@ -98,20 +132,62 @@
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
           <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
             <TextBlock Text="Lock Zoom Area" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
-            <TextBlock Text="Lock here = current cursor point. Lock center = screen centre."
+            <TextBlock Text="On = use offsets below. Off = zoom follows the mouse cursor."
                        FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
           </StackPanel>
-          <Button x:Name="LockCenterButton" Grid.Column="1" MinWidth="100"
-                  Content="Lock center" Click="LockCenterButton_Click"/>
-          <Button x:Name="LockHereButton" Grid.Column="2" MinWidth="100" Margin="6,0,0,0"
-                  Content="Lock here" Click="LockHereButton_Click"/>
-          <ToggleSwitch x:Name="LockAreaSwitch" Grid.Column="3" Margin="8,0,0,0"
+          <ToggleSwitch x:Name="LockAreaSwitch" Grid.Column="1"
                         Toggled="LockAreaSwitch_Toggled"/>
+        </Grid>
+
+        <!-- Offset X -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Offset X" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Horizontal offset from screen centre (px)."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Slider x:Name="OffsetXSlider" Grid.Column="1"
+                  ValueChanged="OffsetXSlider_ValueChanged"/>
+          <TextBlock x:Name="OffsetXLabel" Grid.Column="2" VerticalAlignment="Center"
+                     MinWidth="50" Margin="8,0,0,0" TextAlignment="Right" Foreground="White"/>
+        </Grid>
+
+        <!-- Offset Y -->
+        <Grid Padding="12,8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+            <TextBlock Text="Offset Y" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Vertical offset from screen centre (px)."
+                       FontSize="12" Opacity="0.65" TextWrapping="Wrap" Foreground="White"/>
+          </StackPanel>
+          <Slider x:Name="OffsetYSlider" Grid.Column="1"
+                  ValueChanged="OffsetYSlider_ValueChanged"/>
+          <TextBlock x:Name="OffsetYLabel" Grid.Column="2" VerticalAlignment="Center"
+                     MinWidth="50" Margin="8,0,0,0" TextAlignment="Right" Foreground="White"/>
+        </Grid>
+
+        <!-- Reset offsets -->
+        <Grid Padding="12,4">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Column="0"/>
+          <Button x:Name="ResetOffsetsButton" Grid.Column="1"
+                  MinWidth="140" Content="Reset offsets (0,0)"
+                  Click="ResetOffsetsButton_Click"/>
         </Grid>
 
         <!-- Circular zoom -->

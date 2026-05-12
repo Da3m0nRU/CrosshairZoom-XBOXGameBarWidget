@@ -458,7 +458,6 @@ namespace nsaygqv0ixdkwb
         // Last seen command sequences from settings widget (cross-process).
         private int _lastResizeSeq = -1;
         private int _lastCenterSeq = -1;
-        private int _lastLockHereSeq = -1;
 
         private void RenderLoop()
         {
@@ -550,28 +549,6 @@ namespace nsaygqv0ixdkwb
                     }
                     catch { }
                 });
-            }
-
-            int lockHereSeq = s.RequestedLockHereSeq;
-            if (lockHereSeq != _lastLockHereSeq)
-            {
-                _lastLockHereSeq = lockHereSeq;
-                // Snapshot the current cursor position in monitor-local coords as
-                // the new lock target, and turn Lock on.
-                if (CaptureHelper.TryGetCursorPos(out int cx, out int cy) &&
-                    CaptureHelper.TryGetMonitorRect(_widgetHwnd, out var monRect))
-                {
-                    double lx = cx - monRect.Left;
-                    double ly = cy - monRect.Top;
-                    if (lx >= 0 && ly >= 0 &&
-                        lx <= (monRect.Right - monRect.Left) &&
-                        ly <= (monRect.Bottom - monRect.Top))
-                    {
-                        s.LockedCenterX = lx;
-                        s.LockedCenterY = ly;
-                        s.LockZoomArea = true;
-                    }
-                }
             }
         }
 
@@ -825,17 +802,9 @@ namespace nsaygqv0ixdkwb
             double centerX, centerY;
             if (settings.LockZoomArea)
             {
-                if (settings.LockedCenterX > 0 || settings.LockedCenterY > 0)
-                {
-                    centerX = settings.LockedCenterX;
-                    centerY = settings.LockedCenterY;
-                }
-                else
-                {
-                    // Lock is on but no explicit point — use monitor centre.
-                    centerX = captureSize.Width * 0.5;
-                    centerY = captureSize.Height * 0.5;
-                }
+                // Lock on: target = monitor centre + user-controlled offsets.
+                centerX = captureSize.Width * 0.5 + settings.OffsetX;
+                centerY = captureSize.Height * 0.5 + settings.OffsetY;
             }
             else
             {
